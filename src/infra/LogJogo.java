@@ -3,44 +3,46 @@ package infra;
 import java.io.*;
 import java.nio.file.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
 
 public class LogJogo implements Closeable {
+
     private static final String ARQUIVO_LOG = "tetris.log";
-    private final PrintWriter writer;
+    private PrintWriter writer;
 
     public LogJogo() throws IOException {
-        FileWriter fileWriter = new FileWriter(ARQUIVO_LOG, true);
-        this.writer = new PrintWriter(fileWriter, true);
-        writer.println("NOVA SESSÃO INICIADA EM " + LocalDateTime.now());
+        this.writer = new PrintWriter(new FileWriter(ARQUIVO_LOG, true), true);
+        writer.println("---- Nova sessão em " + LocalDateTime.now() + " ----");
     }
 
     public void logInicioPartida(String jogadorId) {
-        writer.printf("PARTIDA INICIADA - Jogador: %s - %s\n", jogadorId, LocalDateTime.now());
+        writer.printf("[%s] Partida iniciada - Jogador: %s%n", LocalDateTime.now(), jogadorId);
     }
 
     public void logPontuacao(String jogadorId, int pontos, int linhas, int nivel) {
-        writer.printf("PONTUAÇÃO - Jogador: %s, Pontos: %d, Linhas: %d, Nível: %d - %s\n", jogadorId, pontos, linhas, nivel, LocalDateTime.now());
+        writer.printf("[%s] Pontuação - Jogador: %s, Pontos: %d, Linhas: %d, Nível: %d%n",
+                      LocalDateTime.now(), jogadorId, pontos, linhas, nivel);
     }
 
-    public void logGameOver(String jogadorId, int pontuacaoFinal, long duracaoMs) {
-        writer.printf("GAME OVER - Jogador: %s, Pontuação Final: %d, Duração: %dms - %s\n", jogadorId, pontuacaoFinal, duracaoMs, LocalDateTime.now());
+    public void logGameOver(String jogadorId, int pontFinal, long duracaoMs) {
+        writer.printf("[%s] GAME OVER - Jogador: %s, Pontuação: %d, Duração: %dms%n",
+                      LocalDateTime.now(), jogadorId, pontFinal, duracaoMs);
     }
 
     public void logErro(String operacao, Exception e) {
-        writer.printf("ERRO em %s - %s: %s\n", operacao, LocalDateTime.now(), e.getMessage());
+        writer.printf("[%s] ERRO em %s: %s%n", LocalDateTime.now(), operacao, e.toString());
         e.printStackTrace(writer);
     }
 
     @Override
     public void close() {
-        writer.println("SESSÃO ENCERRADA EM " + LocalDateTime.now());
+        writer.println("---- Sessão encerrada " + LocalDateTime.now() + " ----");
         writer.close();
     }
 
-    public static List<String> lerUltimasLinhas(int quantidade) throws IOException {
-        List<String> todasLinhas = Files.readAllLines(Paths.get(ARQUIVO_LOG));
-        if (todasLinhas.size() <= quantidade) return todasLinhas;
-        return todasLinhas.subList(todasLinhas.size() - quantidade, todasLinhas.size());
+    public static List<String> lerUltimasLinhas(int qtd) throws IOException {
+        List<String> linhas = Files.readAllLines(Paths.get(ARQUIVO_LOG));
+        if (linhas.size() <= qtd) return linhas;
+        return linhas.subList(linhas.size() - qtd, linhas.size());
     }
 }

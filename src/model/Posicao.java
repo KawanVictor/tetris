@@ -11,8 +11,8 @@ public class Posicao {
         this.y = y;
     }
 
-    public Posicao mover(int deltaX, int deltaY) {
-        return new Posicao(x + deltaX, y + deltaY);
+    public Posicao mover(int dx, int dy) {
+        return new Posicao(x + dx, y + dy);
     }
 
     public int getX() { return x; }
@@ -21,11 +21,9 @@ public class Posicao {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj instanceof Posicao) {
-            Posicao outra = (Posicao) obj;
-            return x == outra.x && y == outra.y;
-        }
-        return false;
+        if (!(obj instanceof Posicao)) return false;
+        Posicao outra = (Posicao) obj;
+        return x == outra.x && y == outra.y;
     }
 
     @Override

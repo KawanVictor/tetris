@@ -1,11 +1,13 @@
 package infra;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class ConexaoBD {
-    private static final String URL = "jdbc:mysql://localhost:3306/tetrisdb";
+    private static final String URL = "jdbc:mysql://localhost:3306/tetrisdb?serverTimezone=UTC";
     private static final String USUARIO = "root";
-    private static final String SENHA = "senha123";
+    private static final String SENHA = "senha123"; // ajuste conforme seu banco
 
     static {
         try {
@@ -20,9 +22,8 @@ public class ConexaoBD {
     }
 
     public static void testarConexao() {
-        try (Connection conn = obterConexao()) {
-            System.out.println("Conexão estabelecida com sucesso!");
-            System.out.println("Database: " + conn.getCatalog());
+        try (Connection c = obterConexao()) {
+            System.out.println("Conexão ao banco OK!");
         } catch (SQLException e) {
             System.err.println("Erro ao conectar: " + e.getMessage());
         }

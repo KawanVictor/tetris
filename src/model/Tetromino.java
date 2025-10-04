@@ -11,27 +11,10 @@ public class Tetromino {
         this.rotacao = 0;
     }
 
-    public void mover(int deltaX, int deltaY) {
-        posicao = posicao.mover(deltaX, deltaY);
-    }
-
-    public void rotacionar() {
-        rotacao = (rotacao + 1) % 4;
-    }
-
-    public boolean[][] getForma() {
-        return tipo.getForma(rotacao);
-    }
-
-    public Posicao getPosicao() {
-        return posicao;
-    }
-
-    public TipoTetromino getTipo() {
-        return tipo;
-    }
-
-    public int getRotacao() {
-        return rotacao;
-    }
+    public void mover(int dx, int dy) { posicao = posicao.mover(dx, dy); }
+    public void rotacionar() { rotacao = (rotacao+1)%4; }
+    public boolean[][] getForma() { return tipo.getForma(rotacao); }
+    public Posicao getPosicao() { return posicao; }
+    public TipoTetromino getTipo() { return tipo; }
+    public int getRotacao() { return rotacao; }
 }
